@@ -70,7 +70,7 @@ public interface StringList {
     boolean isEmpty();
 
     // Удалить все элементы из списка.
-    void clear();
+    StringList clear();
 
     // Создать новый массив
     // из строк в списке

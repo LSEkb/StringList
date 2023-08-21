@@ -17,10 +17,28 @@ public class StringListImpl implements StringList {
         size = 0;
     }
 
-//    public StringArrayListImpl(String... items) {
-//
-//    }
+    public StringListImpl(String[] strings) {
+        this.innerArray = new String[strings.length];
+        for (int i = 0; i < strings.length; i++) {
+            this.innerArray[i] = strings[i];
+        }
+        this.size = strings.length;
+    }
 
+    @Override
+    public String toString() {
+        String a = "[ ";
+
+        StringBuilder values = new StringBuilder();
+        for (int i = 0; i < this.innerArray.length; i++) {
+            if (innerArray[i] != null) {
+                values.append(innerArray[i] + " ");
+            }
+        }
+        String b = values.toString();
+        String c = "]";
+        return a + b + c;
+    }
 
     @Override
     public String add(String item) {
@@ -75,12 +93,13 @@ public class StringListImpl implements StringList {
         if (checkIndex(index)) {
             throw new ItemNotFoundException();
         }
-        for (int i = 0; i < size - 1; i++) {
+        String deleted = innerArray[index];
+        for (int i = index; i < size - 1; i++) {
             innerArray[i] = innerArray[i + 1];
         }
         innerArray[size - 1] = null;
         size--;
-        return innerArray[index];
+        return deleted;
     }
 
     @Override
@@ -123,14 +142,19 @@ public class StringListImpl implements StringList {
 
     @Override
     public boolean equals(StringList otherList) {
+        if (otherList == this) {
+            return true;
+        }
         if (otherList == null) {
             throw new RuntimeException("Null is not accepted");
         } else {
             if (this.size() == otherList.size()) {
                 for (int i = 0; i < size; i++) {
-                    innerArray[i].equals(otherList.get(i));
-
+                    if (!this.innerArray[i].equals(otherList.get(i))) {
+                        return false;
+                    }
                 }
+                return true;
             }
         }
         return false;
@@ -147,11 +171,12 @@ public class StringListImpl implements StringList {
     }
 
     @Override
-    public void clear() {
+    public StringList clear() {
         for (int i = 0; i < size; i++) {
             innerArray[i] = null;
         }
         size = 0;
+        return null;
     }
 
     @Override
